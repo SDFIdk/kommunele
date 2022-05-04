@@ -13,5 +13,5 @@ app.use(express.static('images'));
 app.use(express.static('icons'));
 
 app.listen(port, () => {
-    console.log('Listening on port ${port}');
+    console.log('Listening on port ' + port);
 });
