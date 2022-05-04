@@ -1,18 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="da">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        
+
         <title>Kommunele</title>
 
         <!-- UIkit CSS -->
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.13.4/dist/css/uikit.min.css" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.14.1/dist/css/uikit.min.css" />
 
         <!-- UIkit JS -->
-        <script src="https://cdn.jsdelivr.net/npm/uikit@3.13.4/dist/js/uikit.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/uikit@3.13.4/dist/js/uikit-icons.min.js"></script>
-
+        <script src="https://cdn.jsdelivr.net/npm/uikit@3.14.1/dist/js/uikit.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/uikit@3.14.1/dist/js/uikit-icons.min.js"></script>
     </head>
     <body>
         <div style="display:flex; padding: 10px">
@@ -60,7 +59,7 @@
                 // Add guess to the list.
                 var table = document.getElementById('guess-list');
                 var tr = document.createElement('tr');
-                
+
                 var td = document.createElement('td');
                 if(currentMunicipalityId == code) {
                     td.style.fontWeight = "bold";
@@ -102,7 +101,7 @@
                     document.getElementById('municipality-selector').disabled = true;
                     document.getElementById('button-select').disabled = true;
                 }
-                
+
                 var a = 1;
             }
 
@@ -149,9 +148,9 @@
             fetch(url)
             .then(res => res.json())
             .then(out => {
-                relations = out;                
+                relations = out;
             });
-            
+
             var a = 1;
             //.catch(err => throw err);
         </script>
