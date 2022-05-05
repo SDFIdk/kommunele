@@ -8,6 +8,7 @@ import json
 import math
 import numpy as np
 import os
+import pyperclip
 import random
 import sqlite3
 
@@ -112,52 +113,100 @@ def calculate_relation(src_feature, dst_feature):
     return distance, direction
 
 
+def create_raster_ds(geometry, max_size):
+
+    cols = max_size
+    rows = max_size
+    bbox = geometry.GetEnvelope()
+
+    width = bbox[1] - bbox[0]
+    height = bbox[3] - bbox[2]
+
+    if width > height:
+        rows = math.ceil(max_size * height / width)
+    else:
+        cols = math.ceil(max_size * width / height)
+    geotransform = [bbox[0], width / cols, 0, bbox[2], 0, height / rows]
+
+    raster_ds = gdal.GetDriverByName('MEM').Create('', cols, rows, 4, gdal.GDT_Byte)
+    raster_ds.SetGeoTransform(geotransform)
+
+    return raster_ds
+
+
+def create_vector_layer(geometry):
+    vector_ds = ogr.GetDriverByName('Memory').CreateDataSource('wrk')
+    mem_layer = vector_ds.CreateLayer('poly')
+
+    f = ogr.Feature(mem_layer.GetLayerDefn())
+    f.SetGeometry(geometry)
+    mem_layer.CreateFeature(f)
+
+    return vector_ds, mem_layer
+
+
+def flip_image(raster_ds):
+    # Flip the image up-down.
+    data = raster_ds.ReadAsArray()
+    for i in range(data.shape[0]):
+        data[i] = np.flipud(data[i])
+
+    raster_ds.WriteArray(data)
+
+    return raster_ds
+
+
 def create_images(features, max_size, folder):
+
+    # Create a single multi polygon with all features.
+    polygon = ogr.Geometry(ogr.wkbMultiPolygon)
     for kommune_id, feature in features.items():
-        out_filename = os.path.join(folder, 'images', kommune_id + '.png')
+        for i in range(feature.GetGeometryRef().GetGeometryCount()):
+            polygon.AddGeometry(feature.GetGeometryRef().GetGeometryRef(i).Buffer(1).Clone())
 
-        cols = max_size
-        rows = max_size
-        bbox = feature.GetGeometryRef().GetEnvelope()
+    combined = polygon.UnionCascaded()
 
-        width = bbox[1] - bbox[0]
-        height = bbox[3] - bbox[2]
+    country_raster_ds = create_raster_ds(combined, max_size)
 
-        if width > height:
-            rows = math.ceil(max_size * height / width)
-        else:
-            cols = math.ceil(max_size * width / height)
-        geotransform = [bbox[0], width / cols, 0, bbox[2], 0, height / rows]
+    vector_ds, mem_layer = create_vector_layer(combined)
 
-        vector_ds = ogr.GetDriverByName('Memory').CreateDataSource('wrk')
-        mem_layer = vector_ds.CreateLayer('poly')
+    # Rasterize the country only.
+    err = gdal.RasterizeLayer(country_raster_ds, [1,2,3,4], mem_layer, burn_values=[49,130,189,255], options=['ALL_TOUCHED=TRUE'])
 
-        f = ogr.Feature(mem_layer.GetLayerDefn())
-        f.SetGeometry(feature.GetGeometryRef())
-        mem_layer.CreateFeature(f)
-        
-        raster_ds = gdal.GetDriverByName('MEM').Create('', cols, rows, 4, gdal.GDT_Byte)
-        #raster_ds.SetProjection(projection)
-        raster_ds.SetGeoTransform(geotransform)
+    # Save the rasterization for later reuse.
+    country_data = country_raster_ds.ReadAsArray()
 
-        #background = np.stack((np.ones((rows, cols)) * 255, np.zeros((rows, cols)), np.ones((rows, cols)) * 255))
-        #raster_ds.WriteArray(background)
+    for kommune_id, feature in features.items():
+        out_image_filename = os.path.join(folder, 'images', kommune_id + '.png')
+        out_result_filename = os.path.join(folder, 'images', kommune_id + '_result.png')
 
-        # Run the algorithm.
+        raster_ds = create_raster_ds(feature.GetGeometryRef(), max_size)
+
+        vector_ds, mem_layer = create_vector_layer(feature.GetGeometryRef())
+
+        # Rasterize the municipality.
         err = gdal.RasterizeLayer(raster_ds, [1,2,3,4], mem_layer, burn_values=[49,130,189,255], options=['ALL_TOUCHED=TRUE'])
 
-        # f.SetGeometry(polygon_to_lines(feature.GetGeometryRef()))
-        # mem_layer.SetFeature(f)
-        # err = gdal.RasterizeLayer(raster_ds, [1,2,3,4], mem_layer, burn_values=[0,0,0,255], options=['ALL_TOUCHED=TRUE'])
+        # Flip image to fit non geographical view.
+        raster_ds = flip_image(raster_ds)
 
-        # Flip the image up-down.
-        data = raster_ds.ReadAsArray()
-        for i in range(data.shape[0]):
-            data[i] = np.flipud(data[i])
+        # Save the municipality image.
+        out_ds = gdal.GetDriverByName('PNG').CreateCopy(out_image_filename, raster_ds, strict=0)
+        out_ds = None
 
-        raster_ds.WriteArray(data)
+        # Create result image.
 
-        out_ds = gdal.GetDriverByName('PNG').CreateCopy(out_filename, raster_ds, strict=0)
+        # Reuse country data.
+        country_raster_ds.WriteArray(country_data)
+
+        # Rasterize the current municipality into the country.
+        err = gdal.RasterizeLayer(country_raster_ds, [1,2,3,4], mem_layer, burn_values=[222,45,38,255], options=['ALL_TOUCHED=TRUE'])
+
+        # Flip image to fit non geographical view.
+        country_raster_ds = flip_image(country_raster_ds)
+
+        # Save the result image.
+        out_ds = gdal.GetDriverByName('PNG').CreateCopy(out_result_filename, country_raster_ds, strict=0)
         out_ds = None
     
 
@@ -244,10 +293,10 @@ def create_json_from_db(database, folder):
         outfile.write(json.dumps(data))
 
 
-def create_municipality_list_json(features, folder):
+def create_municipality_list_json(features):
 
     # JSON file.
-    out_filename = os.path.join(folder, 'municipality_list.json')
+    out_filename = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'data', 'municipality_list.json')
 
     data = []
     for src_kom_id, feature in features.items():
@@ -256,14 +305,17 @@ def create_municipality_list_json(features, folder):
         entry['name'] = feature.GetFieldAsString('navn')
         data.append(entry)
 
+    # Sort the list alphabetically.
+    data.sort(key=lambda x: x['name'])
+
     with open(out_filename, 'w', encoding="utf-8") as outfile:
         outfile.write(json.dumps(data, ensure_ascii=False))
 
 
-def create_date_list_json(features, start_date, folder):
+def create_date_list_json(features, start_date):
 
     # JSON file.
-    out_filename = os.path.join(folder, 'date_list.json')
+    out_filename = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'data', 'date_list.json')
 
     data =[]
 
@@ -286,6 +338,7 @@ def create_date_list_json(features, start_date, folder):
     with open(out_filename, 'w') as outfile:
         outfile.write(json.dumps(data))
 
+
 if __name__ == "__main__":
     err = GdalErrorHandler()
     gdal.PushErrorHandler(err.handler)
@@ -295,17 +348,17 @@ if __name__ == "__main__":
 
     features = get_data(project_folder)
     
-    distances, directions = calculate_relations(features)
+    #distances, directions = calculate_relations(features)
 
     #save_relations(distances, directions)
 
     # Create JSON data.
-    save_json_data(distances, directions, project_folder)
+    #save_json_data(distances, directions, project_folder)
     #create_json_from_db(os.path.join(project_folder, 'relations.db'), project_folder)
 
-    #create_municipality_list_json(features, project_folder)
+    create_municipality_list_json(features)
 
-    #create_date_list_json(features, datetime.datetime.now(), project_folder)
+    create_date_list_json(features, datetime.datetime.now() + datetime.timedelta(days=1))
 
     # Create images.
     #create_images(features, 512, project_folder)
