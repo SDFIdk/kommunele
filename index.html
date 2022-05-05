@@ -15,26 +15,32 @@
     </head>
     <body>
         <div style="display:flex; padding: 10px">
-        <img id="municipality-image" style="margin: 0 auto;" src="" alt="Municipality">
+            <h1 id="header" style="margin: 0 auto; font-weight: bold;">
+                KOMMUNE<sub><i>le</i></sub>
+            </h1>
+        </div> 
+        <div style="display:flex; padding: 10px">
+            <img id="municipality-image" style="margin: 0 auto;" src="" alt="Municipality">
         </div>
         <div style="display:flex">
-            <table id="guess-list" style="margin:0 auto">
-            </table>
+            <table id="guess-list" style="margin:0 auto"></table>
         </div>
         <div style="display:flex">
             <div style="margin:0 auto">
                 <input list="municipality-list" id="municipality-selector">
-                <datalist id="municipality-list"> </datalist>
-                <button id="button-select">Guess</button>
+                <datalist id="municipality-list"></datalist>
+                <button id="button-select">
+                    Gæt
+                </button>
             </div>
         </div>
         <script>
             const selectAnswer = () => {
-                const name = document.getElementById('municipality-selector').value;
+                const name = document.getElementById('municipality-selector').value.toLocaleLowerCase();
 
                 let code = null;
                 for (var item in municipalityList) {
-                    if(municipalityList[item].name === name) {
+                    if(municipalityList[item].name.toLocaleLowerCase() === name) {
                         code = municipalityList[item].id;
                         break;
                     };
@@ -42,6 +48,7 @@
 
                 if (code === null) {
                     console.error('Could not find the municipality in the list!');
+                    return;
                 };
 
                 // Determine the distance and direction to the correct answer.
@@ -91,12 +98,26 @@
 
                 document.getElementById('municipality-selector').value = '';
 
-                // Hide the input box if the guess was correct.
                 if (code === currentMunicipalityId) {
+                    // Hide the input box if the guess was correct.
                     document.getElementById('municipality-selector').disabled = true;
                     document.getElementById('button-select').disabled = true;
+                    // Show the resulting image if the guess was correct.
+                    document.getElementById('municipality-image').src = currentMunicipalityId + '_result.png';
                 };
+
             };
+
+            // Execute a function when the user presses a key on the keyboard
+            document.getElementById('municipality-selector').addEventListener("keypress", (event) => {
+                // If the user presses the "Enter" key on the keyboard
+                if (event.key === "Enter") {
+                    // Cancel the default action, if needed
+                    event.preventDefault();
+                    // Trigger the button element with a click
+                    document.getElementById('button-select').click();
+                };
+            });
 
             document.getElementById('button-select').addEventListener('click', selectAnswer);
 
