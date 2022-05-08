@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="da">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>Kommunele</title>
+
+        <link rel="stylesheet" href="style.css" media="print" type="text/css" onload="this.media='all'">
+        <link rel="preload" as="fetch" crossorigin="anonymous" type="application/json" href="date_list.json">
+        <link rel="preload" as="fetch" crossorigin="anonymous" type="application/json" href="municipality_list.json">
+        <link rel="preload" as="fetch" crossorigin="anonymous" type="application/json" href="relations.json">
+        <script async type="module" src="index.js"></script>
+    </head>
+    <body>
+        <header>
+            <h1>
+                KOMMUNE<sub><i>le</i></sub>
+            </h1>
+        </header>
+
+        <main>
+            <img id="municipality-image" src="" alt="Municipality">
+            <table id="guess-list" tabindex="-1"></table>
+            <form name="guess" autocomplete="off">
+                <datalist id="municipality-list"></datalist>
+                <input list="municipality-list" id="municipality-selector" autocomplete="off" type="text" minlength="4" required value="" autofocus inputmode="text" title="Indtast dit gæt her" pattern="[a-zA-ZæøåÆØÅ\s\-]+">
+                <button id="button-select" formaction="" type="submit" title="Når du er sikker på dit gæt så klik her">
+                    Gæt
+                </button>
+            </form>
+        </main>
+
+        <template id="resultTemplate">
+            <tr>
+                <td data-name=""></td>
+                <td data-distance=""></td>
+                <td>
+                    <i></i>
+                </td>
+            </tr>
+        </template>
+    </body>
+</html>
