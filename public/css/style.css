@@ -5,6 +5,12 @@
     line-height: 1.5;
     color: #666;
 }
+body {
+    transition: opacity 1s;
+}
+body.showSite {
+    opacity: 1;
+}
 body, header, main {
     display: flex;
     flex-wrap: nowrap;
@@ -20,8 +26,25 @@ h1 {
     line-height: 1.2;
     color: #333;
 }
-#municipality-image {
+section {
+    display: grid;
+}
+section img {
+    grid-area: 1/-1;
     padding: 10px;
+}
+#municipality-image {
+    transition: opacity 1s ease-in-out 0s, transform 1s ease-in-out 0s;
+}
+#municipality-image-result {
+    transition: opacity 1.5s ease-in-out 0.3s;
+}
+.hideImg {
+    opacity: 0;
+    transform: rotate(360deg) scale(0,0);
+}
+.showImg {
+    opacity: 1;
 }
 tr td:nth-child(1)::before {
     content: attr(data-name);
@@ -39,14 +62,14 @@ tr:not(.correct) td:nth-child(2)::before {
     content: attr(data-distance)'km'
 }
 tr:not(.correct) i {
-    background: local border-box transparent url("arrow-01.svg") center center no-repeat;
+    background: local border-box transparent url("/icons/arrow-01.svg") center center no-repeat;
     background-size: contain;
 }
 tr.correct td:nth-child(1) {
     font-weight: bold;
 }
 tr.correct i {
-    background: local border-box transparent url("thumbs-up-01.svg") center center no-repeat;
+    background: local border-box transparent url("/icons/thumbs-up-01.svg") center center no-repeat;
     background-size: contain;
 }
 button {

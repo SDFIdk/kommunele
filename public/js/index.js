@@ -7,6 +7,7 @@
         buttonSelect = d.querySelector('#button-select'),
         municipalitySelector = d.querySelector('#municipality-selector'),
         municipalityImage = d.querySelector('#municipality-image'),
+        municipalityImageResult = d.querySelector('#municipality-image-result'),
         resultTemplate = d.querySelector('#resultTemplate');
 
     let municipalityList = null,
@@ -43,42 +44,13 @@
             // Hide the input box if the guess was correct.
             municipalitySelector.disabled = buttonSelect.disabled = true;
             // Show the resulting image if the guess was correct.
-            municipalityImage.src = currentMunicipalityId + '_result.png';
+            municipalityImage.className = 'hideImg';
+            municipalityImageResult.className = 'showImg';
         };
-        return true;
+        return (correctGuess);
     };
 
     DomHasLoaded.then(() => {
-        const municipalityListElm = d.querySelector('#municipality-list'),
-            today = new Date(),
-            todayString = today.getFullYear().toString() + (today.getMonth() + 1).toString().padStart(2, '0') + today.getDate().toString().padStart(2, '0'),
-            initData = [
-                fetch('date_list.json')
-                    .then(res => res.json())
-                    .then((out) => {
-                        // Set the municipality image.
-                        const currentMunicipality = out.find(item => item.date === todayString) ?? null;
-                        currentMunicipalityId = currentMunicipality?.id ?? 'NotFound';
-                        municipalityImage.src = currentMunicipalityId + '.png';
-                    }),
-                fetch('municipality_list.json')
-                    .then(res => res.json())
-                    .then((out) => {
-                        municipalityList = out;
-                        const group = d.createDocumentFragment();
-                        out.forEach(item => {
-                            const el = d.createElement('option');
-                            el.value = item.name;
-                            group.appendChild(el);
-                        });
-                        municipalityListElm.appendChild(group);
-                    }),
-                fetch('relations.json')
-                    .then(res => res.json())
-                    .then((out) => { relations = out; })
-            ];
-        Promise.all([...initData]);
-
         d.forms.guess.addEventListener('submit', (event) => {
             event.preventDefault();
             const guess = municipalitySelector.value.toLocaleLowerCase() || '';
@@ -90,5 +62,36 @@
             };
             municipalitySelector.value = '';
         });
+
+        const municipalityListElm = d.querySelector('#municipality-list'),
+            today = new Date(),
+            todayString = today.getFullYear().toString() + (today.getMonth() + 1).toString().padStart(2, '0') + today.getDate().toString().padStart(2, '0'),
+            initData = [
+                fetch('/data/date_list.json')
+                    .then(res => res.json())
+                    .then((out) => {
+                        // Set the municipality image.
+                        const currentMunicipality = out.find(item => item.date === todayString) ?? null;
+                        currentMunicipalityId = currentMunicipality?.id ?? 'NotFound';
+                        municipalityImage.src = '/images/' + currentMunicipalityId + '.png';
+                        municipalityImageResult.src = '/images/' + currentMunicipalityId + '_result.png';
+                    }),
+                fetch('/data/municipality_list.json')
+                    .then(res => res.json())
+                    .then((out) => {
+                        municipalityList = out;
+                        const group = d.createDocumentFragment();
+                        out.forEach(item => {
+                            const el = d.createElement('option');
+                            el.value = item.name;
+                            group.appendChild(el);
+                        });
+                        municipalityListElm.appendChild(group);
+                    }),
+                fetch('/data/relations.json')
+                    .then(res => res.json())
+                    .then((out) => { relations = out; })
+            ];
+        Promise.all([...initData]).then(() => { d.body.className = 'showSite'; });
     });
 })(window, document);

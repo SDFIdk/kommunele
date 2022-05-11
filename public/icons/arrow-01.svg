@@ -1,46 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg
-   viewBox="0 0 400 400"
-   version="1.1"
-   id="svg19"
-   sodipodi:docname="arrow_01.svg"
-   width="400"
-   height="400"
-   inkscape:version="1.1.2 (b8e25be833, 2022-02-05)"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:svg="http://www.w3.org/2000/svg">
-  <defs
-     id="defs23" />
-  <sodipodi:namedview
-     id="namedview21"
-     pagecolor="#ffffff"
-     bordercolor="#999999"
-     borderopacity="1"
-     inkscape:pageshadow="0"
-     inkscape:pageopacity="0"
-     inkscape:pagecheckerboard="0"
-     showgrid="true"
-     inkscape:zoom="2.28125"
-     inkscape:cx="195.28767"
-     inkscape:cy="181.0411"
-     inkscape:window-width="2560"
-     inkscape:window-height="1377"
-     inkscape:window-x="-8"
-     inkscape:window-y="-8"
-     inkscape:window-maximized="1"
-     inkscape:current-layer="svg19">
-    <inkscape:grid
-       type="xygrid"
-       id="grid105"
-       spacingy="10"
-       spacingx="10" />
-  </sodipodi:namedview>
-  <!--! Font Awesome Pro 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
-  <path
-     style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-     d="M 390,200 220,50 V 160 H 10 v 80 h 210 v 110 z"
-     id="path333"
-     sodipodi:nodetypes="cccccccc" />
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="16" height="16" preserveAspectRatio="xMidYMid meet">
+    <path stroke="#000" d="M390 200 220 50v110H10v80h210v110z"/>
 </svg>

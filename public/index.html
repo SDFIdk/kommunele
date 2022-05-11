@@ -6,13 +6,21 @@
 
         <title>Kommunele</title>
 
-        <link rel="stylesheet" href="style.css" media="print" type="text/css" onload="this.media='all'">
-        <link rel="preload" as="fetch" crossorigin="anonymous" type="application/json" href="date_list.json">
-        <link rel="preload" as="fetch" crossorigin="anonymous" type="application/json" href="municipality_list.json">
-        <link rel="preload" as="fetch" crossorigin="anonymous" type="application/json" href="relations.json">
-        <script async type="module" src="index.js"></script>
+        <link rel="stylesheet" href="css/style.css" media="print" type="text/css" onload="this.media='all'">
+        <link rel="preload" as="fetch" crossorigin="anonymous" type="application/json" href="data/date_list.json">
+        <link rel="preload" as="fetch" crossorigin="anonymous" type="application/json" href="data/municipality_list.json">
+        <link rel="preload" as="fetch" crossorigin="anonymous" type="application/json" href="data/relations.json">
+        <script async type="module" src="js/index.js"></script>
+        <style>
+            .hidden {
+                opacity: 0;
+            }
+            .shown {
+                opacity: 1;
+            }
+        </style>
     </head>
-    <body>
+    <body class="hidden">
         <header>
             <h1>
                 KOMMUNE<sub><i>le</i></sub>
@@ -20,7 +28,10 @@
         </header>
 
         <main>
-            <img id="municipality-image" src="" alt="Municipality">
+            <section>
+                <img id="municipality-image" src="" alt="Municipality" class="shown">
+                <img id="municipality-image-result" src="" alt="Municipality Location" class="hidden">
+            </section>
             <table id="guess-list" tabindex="-1"></table>
             <form name="guess" autocomplete="off">
                 <datalist id="municipality-list"></datalist>
