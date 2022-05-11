@@ -82,9 +82,7 @@
                         municipalityList = out;
                         const group = d.createDocumentFragment();
                         out.forEach(item => {
-                            const el = d.createElement('option');
-                            el.value = item.name;
-                            group.appendChild(el);
+                            group.appendChild(new Option(item.name));
                         });
                         municipalityListElm.appendChild(group);
                     }),
