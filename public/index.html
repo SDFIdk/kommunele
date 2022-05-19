@@ -32,14 +32,14 @@
                 <img id="municipality-image" src="" alt="Municipality" class="shown">
                 <img id="municipality-image-result" src="" alt="Municipality Location" class="hidden">
             </section>
-            <table id="guess-list" tabindex="-1"></table>
             <form name="guess" autocomplete="off">
                 <datalist id="municipality-list"></datalist>
-                <input list="municipality-list" id="municipality-selector" autocomplete="off" type="text" minlength="4" required value="" autofocus inputmode="text" title="Indtast dit gæt her" pattern="[a-zA-ZæøåÆØÅ\s\-]+">
+                <input list="municipality-list" id="municipality-selector" autocomplete="off" type="text" minlength="4" required value="" inputmode="text" title="Indtast dit gæt her" pattern="[a-zA-ZæøåÆØÅ\s\-]+">
                 <button id="button-select" formaction="" type="submit" title="Når du er sikker på dit gæt så klik her">
                     Gæt
                 </button>
             </form>
+            <table id="guess-list" tabindex="-1"></table>
         </main>
 
         <template id="resultTemplate">

@@ -2,7 +2,7 @@
 
 (async (w, d) => {
     const DomHasLoaded = new Promise((resolve) => {
-            if (d.readyState !== 'loading') { return resolve(); };
+            if (d.readyState !== 'loading') { resolve(); };
         }),
         buttonSelect = d.querySelector('#button-select'),
         municipalitySelector = d.querySelector('#municipality-selector'),
@@ -37,7 +37,7 @@
         newResult.querySelector('td:nth-child(1)').dataset.name = guessedName;
         newResult.querySelector('td:nth-child(2)').dataset.distance = (correctGuess) ? '' : Math.round(distance / 1000.0, 2);
         newResult.querySelector('i').style.transform = (correctGuess) ? '' : 'rotate(' + (360.0 - direction * 180.0/Math.PI) + 'deg)';
-        guessList.appendChild(newResult);
+        guessList.prepend(newResult);
 
 
         if (correctGuess) {
