@@ -258,8 +258,8 @@ def save_json_data(distances, directions, folder):
     for src_kom_id, relations in distances.items():
         for dst_kom_id, distance in relations.items():
             entry = {}
-            entry['src_id'] = src_kom_id
-            entry['dst_id'] = dst_kom_id
+            entry['src_id'] = int(src_kom_id)
+            entry['dst_id'] = int(dst_kom_id)
             entry['distance'] = round(distance,0)
             entry['direction'] = round(directions[src_kom_id][dst_kom_id], 2)
             data.append(entry)
@@ -283,8 +283,8 @@ def create_json_from_db(database, folder):
 
     for row in cursor.fetchall():
         entry = {}
-        entry['src_id'] = row[0]
-        entry['dst_id'] = row[1]
+        entry['src_id'] = int(row[0])
+        entry['dst_id'] = int(row[1])
         entry['distance'] = round(row[2],0)
         entry['direction'] = round(row[3], 2)
         data.append(entry)
@@ -301,7 +301,7 @@ def create_municipality_list_json(features):
     data = []
     for src_kom_id, feature in features.items():
         entry = {}
-        entry['id'] = src_kom_id
+        entry['id'] = int(src_kom_id)
         entry['name'] = feature.GetFieldAsString('navn')
         data.append(entry)
 
@@ -327,8 +327,8 @@ def create_date_list_json(features, start_date):
     for src_kom_id in src_kom_ids:
         
         entry = {
-            'id': src_kom_id,
-            'date': current_date.strftime('%Y%m%d')
+            'id': int(src_kom_id),
+            'date': int(current_date.strftime('%Y%m%d'))
         }
 
         data.append(entry)
