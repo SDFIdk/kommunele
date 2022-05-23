@@ -10,12 +10,14 @@
         municipalityImageResult = d.querySelector('#municipality-image-result'),
         resultTemplate = d.querySelector('#resultTemplate');
 
-    let municipalityList = null,
+    let imageTheme = 'blue',
+        municipalityList = null,
         relations = null,
         currentMunicipalityId = null,
         guessList = d.querySelector('#guess-list');
 
     const selectAnswer = (name) => {
+        const matchedGuess = municipalityList.find(item => item.name.toLocaleLowerCase() === name),
         const matchedGuess = municipalityList.find(item => item.name.toLocaleLowerCase() === name),
             guessedName = matchedGuess?.name ?? null,
             guessedCode = matchedGuess?.id ?? null;
@@ -70,26 +72,25 @@
         });
 
         const municipalityListElm = d.querySelector('#municipality-list'),
-            today = new Date(),
-            todayString = today.getFullYear().toString() + (today.getMonth() + 1).toString().padStart(2, '0') + today.getDate().toString().padStart(2, '0'),
+            todayString = (new Date()).toLocaleDateString('en-CA', {year: 'numeric', month: '2-digit', day: '2-digit'}).replaceAll('-', ''),
             initData = [
                 fetch('/data/date_list.json')
                     .then(res => res.json())
                     .then((out) => {
                         // Set the municipality image.
-                        const currentMunicipality = out.find(item => item.date === todayString) ?? null;
-                        currentMunicipalityId = currentMunicipality?.id ?? 'NotFound';
-                        municipalityImage.src = '/images/' + currentMunicipalityId + '.png';
-                        municipalityImageResult.src = '/images/' + currentMunicipalityId + '_result.png';
+                        currentMunicipalityId = out[todayString] ?? 'NotFound';
+                        municipalityImage.src = '/images/' + imageTheme + '/' + currentMunicipalityId + '.png';
+                        municipalityImageResult.src = '/images/' + imageTheme + '/' + currentMunicipalityId + '_result.png';
                     }),
                 fetch('/data/municipality_list.json')
                     .then(res => res.json())
                     .then((out) => {
-                        municipalityList = out;
+                        /*municipalityList = Object.keys(out).reduce((ret, key) => {
+                            ret[out[key]] = key;
+                            return ret;
+                        }, {});*/
                         const group = d.createDocumentFragment();
-                        out.forEach(item => {
-                            group.appendChild(new Option(item.name));
-                        });
+                        Object.entries(out).every((item) => group.appendChild(new Option(item[1], item[0])));
                         municipalityListElm.appendChild(group);
                     }),
                 fetch('/data/relations.json')
