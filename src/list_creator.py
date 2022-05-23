@@ -54,12 +54,12 @@ class ListCreator(object):
         # JSON file.
         out_filename = os.path.join(folder, 'relations.json')
 
-        data = []
+        data = {}
 
         for src_kom_id, dst_relations in relations:
-            entries = []
+            entries = {}
             for dst_kom_id, distance, direction in dst_relations:
-                entries.append((dst_kom_id, [round(distance, 0), round(direction, 2)]))
+                entries[dst_kom_id] = [round(distance, 0), round(direction, 2)]
                 # entry = {}
                 # entry['src_id'] = src_kom_id
                 # entry['dst_id'] = dst_kom_id
@@ -67,9 +67,9 @@ class ListCreator(object):
                 # entry['direction'] = round(directions[src_kom_id][dst_kom_id], 2)
                 # data.append(entry)
             
-            data.append((src_kom_id, entries))
+            data[src_kom_id] = entries
 
-        data = dict(data)
+        #data = dict(data)
 
         with open(out_filename, 'w') as outfile:
             outfile.write(json.dumps(data))
