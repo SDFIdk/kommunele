@@ -33,11 +33,17 @@
 
         // Add guess to the list.
         const newResult = resultTemplate.content.cloneNode(true);
-        newResult.querySelector('tr').className = (correctGuess) ? 'correct' : '';
+        newResult.querySelector('li').className = (correctGuess) ? 'correct' : '';
+        newResult.querySelector('span:nth-child(1)').dataset.name = guessedName;
+        newResult.querySelector('span:nth-child(2)').dataset.distance = (correctGuess) ? '' : Math.round(distance / 1000.0, 2);
+        newResult.querySelector('i').style.transform = (correctGuess) ? '' : 'rotate(' + (360.0 - direction * 180.0/Math.PI) + 'deg)';
+
+/*        newResult.querySelector('tr').className = (correctGuess) ? 'correct' : '';
         newResult.querySelector('td:nth-child(1)').dataset.name = guessedName;
         newResult.querySelector('td:nth-child(2)').dataset.distance = (correctGuess) ? '' : Math.round(distance / 1000.0, 2);
-        newResult.querySelector('i').style.transform = (correctGuess) ? '' : 'rotate(' + (360.0 - direction * 180.0/Math.PI) + 'deg)';
-        guessList.prepend(newResult);
+        newResult.querySelector('i').style.transform = (correctGuess) ? '' : 'rotate(' + (360.0 - direction * 180.0/Math.PI) + 'deg)';*/
+//        guessList.prepend(newResult);
+        guessList.appendChild(newResult);
 
 
         if (correctGuess) {

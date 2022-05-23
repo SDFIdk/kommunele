@@ -22,15 +22,15 @@
     </head>
     <body class="hidden">
         <header>
-            <h1>
+            <h1 tabindex="-1">
                 KOMMUNE<sub><i>le</i></sub>
             </h1>
         </header>
 
         <main>
             <section>
-                <img id="municipality-image" src="" alt="Municipality" class="shown">
-                <img id="municipality-image-result" src="" alt="Municipality Location" class="hidden">
+                <img id="municipality-image" src="" alt="Municipality" class="shown" tabindex="-1">
+                <img id="municipality-image-result" src="" alt="Municipality Location" class="hidden" tabindex="-1">
             </section>
             <form name="guess" autocomplete="off">
                 <datalist id="municipality-list"></datalist>
@@ -39,10 +39,18 @@
                     Gæt
                 </button>
             </form>
-            <table id="guess-list" tabindex="-1"></table>
+            <ul id="guess-list" tabindex="-1"></ul>
+            <!--<table id="guess-list" tabindex="-1"></table>-->
         </main>
 
         <template id="resultTemplate">
+            <li>
+                <span data-name=""></span>
+                <span data-distance=""></span>
+                <i></i>
+            </li>
+        </template>
+<!--        <template id="resultTemplate">
             <tr>
                 <td data-name=""></td>
                 <td data-distance=""></td>
@@ -50,6 +58,6 @@
                     <i></i>
                 </td>
             </tr>
-        </template>
+        </template>-->
     </body>
 </html>
