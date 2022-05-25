@@ -58,8 +58,10 @@ if __name__ == "__main__":
     data_folder = os.path.join(public_folder, 'data')
     image_folder = os.path.join(public_folder, 'images')
     max_image_size = 512
-    polygon_color = [0,109,44,255]
-    highlight_color = [222,45,38,255]
+
+    # More colorblind friendly colours.
+    polygon_color = [77,172,38,255]
+    highlight_color = [208,28,139,255]
 
     features = get_data(input_data_folder)
     

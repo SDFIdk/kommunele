@@ -32,15 +32,16 @@
                 <img id="municipality-image" src="" alt="Municipality" class="shown" tabindex="-1">
                 <img id="municipality-image-result" src="" alt="Municipality Location" class="hidden" tabindex="-1">
             </section>
-            <form name="guess" autocomplete="off">
-                <datalist id="municipality-list"></datalist>
-                <input list="municipality-list" id="municipality-selector" autocomplete="off" type="text" minlength="4" required value="" inputmode="text" title="Indtast dit gæt her" pattern="[a-zA-ZæøåÆØÅ\s\-]+">
-                <button id="button-select" formaction="" type="submit" title="Når du er sikker på dit gæt så klik her">
-                    Gæt
-                </button>
-            </form>
-            <ul id="guess-list" tabindex="-1"></ul>
-            <!--<table id="guess-list" tabindex="-1"></table>-->
+            <section>
+                <form name="guess" autocomplete="off">
+                    <datalist id="municipality-list"></datalist>
+                    <input list="municipality-list" id="municipality-selector" autocomplete="off" type="text" minlength="4" required value="" inputmode="text" title="Indtast dit gæt her" pattern="[a-zA-ZæøåÆØÅ\s\-]+">
+                    <button id="button-select" formaction="" type="submit" title="Når du er sikker på dit gæt så klik her">
+                        Gæt
+                    </button>
+                </form>
+                <ul id="guess-list" tabindex="-1"></ul>
+            </section>
         </main>
 
         <template id="resultTemplate">
@@ -50,14 +51,5 @@
                 <i></i>
             </li>
         </template>
-<!--        <template id="resultTemplate">
-            <tr>
-                <td data-name=""></td>
-                <td data-distance=""></td>
-                <td>
-                    <i></i>
-                </td>
-            </tr>
-        </template>-->
     </body>
 </html>

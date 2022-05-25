@@ -17,7 +17,7 @@ body, header, main {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 10px 0;
+    padding: 0.625rem 0;
     margin: 0;
 }
 h1 {
@@ -27,12 +27,12 @@ h1 {
     line-height: 1.2;
     color: #333;
 }
-section {
+section:first-of-type {
     display: grid;
 }
-section img {
+section:first-of-type img {
     grid-area: 1/-1;
-    padding: 10px 0;
+    padding: 0.625rem 0;
     object-fit: contain;
     display: block;
     max-width: 100vw;
@@ -52,7 +52,7 @@ section img {
 }
 button {
     cursor: pointer;
-    margin: 5px;
+    margin: 0.3125rem;
 }
 button:disabled {
     cursor: default;
@@ -61,42 +61,35 @@ button:disabled {
     animation: shake 400ms 1 linear;
 }
 ul {
+    counter-reset: guessAmount;
     list-style-type: none;
     margin: 0;
     padding: 0;
     display: flex;
-    flex-wrap: nowrap;
     flex-direction: column-reverse;
-    flex: 1;
-    overflow: hidden;
-    transition: all 500ms ease-in-out;
+    flex-wrap: nowrap;
 }
 li {
     display: flex;
     flex-wrap: nowrap;
     flex-direction: row;
     align-items: center;
-    overflow: hidden;
-    transition: all 500ms ease-in-out;
 }
-li:last-of-type {
-    /*transform-origin: 50% 0;*/
-    flex: .00001;
-    animation: grow 500ms 1 linear;
-}
-li:not(:last-of-type) {
-    flex: 1;
+li::before {
+    counter-increment: guessAmount;
+    content: counter(guessAmount) '.';
+    padding-right: 0.625rem;
 }
 li span:nth-child(1)::before {
     content: attr(data-name);
 }
 li span:nth-child(2) {
     margin-left: auto;
-    padding: 0px 10px;
+    padding: 0px 0.625rem;
 }
 li i {
-    width: 16px;
-    height: 16px;
+    width: 1rem;
+    height: 1rem;
 }
 li:not(.correct) span:nth-child(2)::before {
     content: attr(data-distance)'km'
@@ -105,84 +98,34 @@ li:not(.correct) i {
     background: local border-box transparent url("/icons/arrow-01.svg") center center no-repeat;
     background-size: contain;
 }
-li.correct span:nth-child(1) {
+li.correct {
     font-weight: bold;
 }
 li.correct i {
     background: local border-box transparent url("/icons/thumbs-up-01.svg") center center no-repeat;
     background-size: contain;
 }
-tr {
-    display: block;
-    position: relative;
-    transition: all 2s ease-in-out 0s;
-}
-tr:first-of-type {
-    display: block;
-    /*transform-origin: 50% 0;*/
-    line-height: 0;
-    max-height: 0;
-    height: 0;
-    animation: grow 2s 1 linear;
-}
-tr:not(:first-of-type) {
-}
-tr td:nth-child(1)::before {
-    content: attr(data-name);
-}
-tr td:nth-child(2) {
-    padding: 0px 10px;
-    text-align: right;
-}
-tr i {
-    display: block;
-    width: 16px;
-    height: 16px;
-}
-tr:not(.correct) td:nth-child(2)::before {
-    content: attr(data-distance)'km'
-}
-tr:not(.correct) i {
-    background: local border-box transparent url("/icons/arrow-01.svg") center center no-repeat;
-    background-size: contain;
-}
-tr.correct td:nth-child(1) {
-    font-weight: bold;
-}
-tr.correct i {
-    background: local border-box transparent url("/icons/thumbs-up-01.svg") center center no-repeat;
-    background-size: contain;
-}
 @-o-keyframes shake {
-    0% { transform: translate(30px); }
-    20% { transform: translate(-30px); }
-    40% { transform: translate(15px); }
-    60% { transform: translate(-15px); }
-    80% { transform: translate(8px); }
+    0% { transform: translate(1.875rem); }
+    20% { transform: translate(-1.875rem); }
+    40% { transform: translate(1rem); }
+    60% { transform: translate(-1rem); }
+    80% { transform: translate(0.5rem); }
     100% { transform: translate(0px); }
 }
 @-moz-keyframes shake {
-    0% { transform: translate(30px); }
-    20% { transform: translate(-30px); }
-    40% { transform: translate(15px); }
-    60% { transform: translate(-15px); }
-    80% { transform: translate(8px); }
+    0% { transform: translate(1.875rem); }
+    20% { transform: translate(-1.875rem); }
+    40% { transform: translate(1rem); }
+    60% { transform: translate(-1rem); }
+    80% { transform: translate(0.5rem); }
     100% { transform: translate(0px); }
 }
 @-webkit-keyframes shake {
-    0% { transform: translate(30px); }
-    20% { transform: translate(-30px); }
-    40% { transform: translate(15px); }
-    60% { transform: translate(-15px); }
-    80% { transform: translate(8px); }
+    0% { transform: translate(1.875rem); }
+    20% { transform: translate(-1.875rem); }
+    40% { transform: translate(1rem); }
+    60% { transform: translate(-1rem); }
+    80% { transform: translate(0.5rem); }
     100% { transform: translate(0px); }
-}
-@-o-keyframes grow {
-    100% { flex: 1; }
-}
-@-moz-keyframes grow {
-    100% { flex: 1; }
-}
-@-webkit-keyframes grow {
-    100% { flex: 1; }
 }

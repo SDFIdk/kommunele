@@ -82,10 +82,10 @@ class ListCreator(object):
 
         data = []
         for src_kom_id, feature in features.items():
-            data.append((src_kom_id, feature.GetFieldAsString('navn')))
+            data.append((feature.GetFieldAsString('navn'), src_kom_id))
 
         # Sort the list alphabetically.
-        data.sort(key=lambda x: x[1])
+        data.sort(key=lambda x: x[0])
 
         # Convert to a dictionary for a more compressed output. This seems to keep the order of the elements.
         data = dict(data)
