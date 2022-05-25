@@ -10,15 +10,15 @@
         municipalityImageResult = d.querySelector('#municipality-image-result'),
         resultTemplate = d.querySelector('#resultTemplate');
 
-    let municipalityList = null,
+    let imageTheme = 'green',
+        municipalityList = null,
         relations = null,
         currentMunicipalityId = null,
         guessList = d.querySelector('#guess-list');
 
     const selectAnswer = (name) => {
-        const matchedGuess = municipalityList.find(item => item.name.toLocaleLowerCase() === name),
-            guessedName = matchedGuess?.name ?? null,
-            guessedCode = matchedGuess?.id ?? null;
+        const guessedName = name ?? null,
+            guessedCode = municipalityList?.[guessedName] ?? null;
 
         if (guessedCode === null) {
             console.error('Could not find the municipality in the list!');
@@ -26,19 +26,18 @@
         };
 
         // Determine the distance and direction to the correct answer.
-        const relation = relations.find(item => item.dst_id === currentMunicipalityId && item.src_id === guessedCode) ?? null,
-            distance = relation?.distance ?? 'N/A',
-            direction = relation?.direction ?? 'N/A',
+        const relation = relations?.[guessedCode]?.[currentMunicipalityId] ?? null,
+            distance = relation?.[0] ?? 'N/A',
+            direction = relation?.[1] ?? 'N/A',
             correctGuess = (currentMunicipalityId === guessedCode);
 
         // Add guess to the list.
         const newResult = resultTemplate.content.cloneNode(true);
-        newResult.querySelector('tr').className = (correctGuess) ? 'correct' : '';
-        newResult.querySelector('td:nth-child(1)').dataset.name = guessedName;
-        newResult.querySelector('td:nth-child(2)').dataset.distance = (correctGuess) ? '' : Math.round(distance / 1000.0, 2);
+        newResult.querySelector('li').className = (correctGuess) ? 'correct' : '';
+        newResult.querySelector('span:nth-child(1)').dataset.name = guessedName;
+        newResult.querySelector('span:nth-child(2)').dataset.distance = (correctGuess) ? '' : Math.round(distance / 1000.0, 2);
         newResult.querySelector('i').style.transform = (correctGuess) ? '' : 'rotate(' + (360.0 - direction * 180.0/Math.PI) + 'deg)';
-        guessList.prepend(newResult);
-
+        guessList.appendChild(newResult);
 
         if (correctGuess) {
             // Hide the input box if the guess was correct.
@@ -48,12 +47,17 @@
             municipalityImageResult.className = 'showImg';
         };
         return (correctGuess);
+    },
+    getter = (file, fn) => {
+        fetch(file)
+            .then(res => res.json())
+            .then(out => fn(out))
     };
 
     DomHasLoaded.then(() => {
         d.forms.guess.addEventListener('submit', (event) => {
             event.preventDefault();
-            const guess = municipalitySelector.value.toLocaleLowerCase() || '';
+            const guess = municipalitySelector.value.replaceAll(/(^\w)|([-\s]\w)/g, w => w.toLocaleUpperCase()) || null;
             if (!selectAnswer(guess) || !d.forms.guess.checkValidity()) {
                 d.forms.guess.classList.toggle('shake');
                 w.setTimeout(() => {
@@ -64,32 +68,22 @@
         });
 
         const municipalityListElm = d.querySelector('#municipality-list'),
-            today = new Date(),
-            todayString = today.getFullYear().toString() + (today.getMonth() + 1).toString().padStart(2, '0') + today.getDate().toString().padStart(2, '0'),
+            todayString = (new Date()).toLocaleDateString('en-CA', {year: 'numeric', month: '2-digit', day: '2-digit'}).replaceAll('-', ''),
             initData = [
-                fetch('/data/date_list.json')
-                    .then(res => res.json())
-                    .then((out) => {
-                        // Set the municipality image.
-                        const currentMunicipality = out.find(item => item.date === todayString) ?? null;
-                        currentMunicipalityId = currentMunicipality?.id ?? 'NotFound';
-                        municipalityImage.src = '/images/' + currentMunicipalityId + '.png';
-                        municipalityImageResult.src = '/images/' + currentMunicipalityId + '_result.png';
-                    }),
-                fetch('/data/municipality_list.json')
-                    .then(res => res.json())
-                    .then((out) => {
-                        municipalityList = out;
-                        const group = d.createDocumentFragment();
-                        out.forEach(item => {
-                            group.appendChild(new Option(item.name));
-                        });
-                        municipalityListElm.appendChild(group);
-                    }),
-                fetch('/data/relations.json')
-                    .then(res => res.json())
-                    .then((out) => { relations = out; })
+                getter('/data/date_list.json', (out) => {
+                    // Set the municipality image.
+                    currentMunicipalityId = out?.[todayString] ?? 'NotFound';
+                    municipalityImage.src = '/images/' + imageTheme + '/' + currentMunicipalityId + '.png';
+                    municipalityImageResult.src = '/images/' + imageTheme + '/' + currentMunicipalityId + '_result.png';
+                }),
+                getter('/data/municipality_list.json', (out) => {
+                    municipalityList = out;
+                    const group = d.createDocumentFragment();
+                    Object.keys(municipalityList).every(item => ~group.appendChild(new Option(item)));
+                    municipalityListElm.appendChild(group);
+                }),
+                getter('/data/relations.json', out => relations = out)
             ];
-        Promise.all([...initData]).then(() => { d.body.className = 'showSite'; });
+        Promise.all([...initData]).then(() => d.body.className = 'showSite');
     });
 })(window, document);
