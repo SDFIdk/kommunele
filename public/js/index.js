@@ -8,7 +8,8 @@
         municipalitySelector = d.querySelector('#municipality-selector'),
         municipalityImage = d.querySelector('#municipality-image'),
         municipalityImageResult = d.querySelector('#municipality-image-result'),
-        resultTemplate = d.querySelector('#resultTemplate');
+        resultTemplate = d.querySelector('#resultTemplate'),
+        navMenu = d.querySelector('#menu');
 
     let imageTheme = 'green',
         municipalityList = null,
@@ -65,6 +66,11 @@
                 }, 400);
             };
             municipalitySelector.value = '';
+        });
+
+        navMenu.addEventListener('click', (event) => {
+            navMenu.classList.toggle('open');
+            console.log(event);
         });
 
         const municipalityListElm = d.querySelector('#municipality-list'),

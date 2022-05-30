@@ -21,6 +21,11 @@ body, header, main {
     padding: 0;
     margin: 0;
 }
+header {
+    display: grid;
+    grid-auto-flow: column;
+    justify-items: center;
+}
 h1 {
     padding: 0.625rem 0;
     font-weight: bold;
@@ -29,6 +34,19 @@ h1 {
     line-height: 1.2;
     color: #333;
     text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
+}
+nav {
+    margin-left: auto;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 2rem;
+    color: #000;
+}
+nav::before {
+    content: '\2630';
+}
+nav.open::before {
+    content: '\26CC';
 }
 section:first-of-type {
     position: relative;
