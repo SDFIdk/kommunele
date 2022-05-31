@@ -12,6 +12,7 @@
         navMenu = d.querySelector('#menu');
 
     let imageTheme = 'green',
+        imagePath = '/images/' + imageTheme + '/',
         municipalityList = null,
         relations = null,
         currentMunicipalityId = null,
@@ -73,14 +74,19 @@
             console.log(event);
         });
 
+        municipalityImage.addEventListener('load', () => {
+            d.documentElement.style.setProperty('--map-width', (municipalityImage.scrollWidth / parseFloat(getComputedStyle(d.documentElement).fontSize)) + 'rem');
+        });
+
         const municipalityListElm = d.querySelector('#municipality-list'),
             todayString = (new Date()).toLocaleDateString('en-CA', {year: 'numeric', month: '2-digit', day: '2-digit'}).replaceAll('-', ''),
             initData = [
                 getter('/data/date_list.json', (out) => {
                     // Set the municipality image.
                     currentMunicipalityId = out?.[todayString] ?? 'NotFound';
-                    municipalityImage.src = '/images/' + imageTheme + '/' + currentMunicipalityId + '.png';
-                    municipalityImageResult.src = '/images/' + imageTheme + '/' + currentMunicipalityId + '_result.png';
+                    const imgSrc = imagePath + currentMunicipalityId;
+                    municipalityImage.src = imgSrc + '.png';
+                    municipalityImageResult.src = imgSrc + '_result.png';
                 }),
                 getter('/data/municipality_list.json', (out) => {
                     municipalityList = out;
@@ -90,6 +96,7 @@
                 }),
                 getter('/data/relations.json', out => relations = out)
             ];
+
         Promise.all([...initData]).then(() => d.body.className = 'showSite');
     });
 })(window, document);
