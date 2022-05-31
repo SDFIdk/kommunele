@@ -55,7 +55,7 @@ svg path {
     transition: all 250ms ease-in-out;
 }
 nav.open svg path {
-    d: path("m5 5 65 65M35 35 35 35M5 70 70 5");
+    d: path("M5 85 85 10M5 10 85 85M5 85 85 10");
 }
 section:first-of-type {
     position: relative;
