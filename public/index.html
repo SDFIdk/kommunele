@@ -13,10 +13,7 @@
         <script async type="module" src="js/index.js"></script>
         <style>
             .hidden {
-                opacity: 0;
-            }
-            .shown {
-                opacity: 1;
+                display: none;
             }
         </style>
     </head>
@@ -33,16 +30,16 @@
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet"><path d="M5 10 95 10M5 48 95 48M5 85 95 85"/></svg>
                 </label>
                 <ul id="menuList" class="hidden">
-                    <li>a</li>
-                    <li>b</li>
-                    <li>c</li>
+                    <li>&#10067;</li>
+                    <li>&#128712;</li>
+                    <li>&#128736;</li>
                 </ul>
             </nav>
         </aside>
 
         <main>
             <section>
-                <img id="municipalityImage" src="" alt="Municipality" class="shown" tabindex="-1" loading="lazy">
+                <img id="municipalityImage" src="" alt="Municipality" tabindex="-1" loading="lazy">
                 <img id="municipalityImageResult" src="" alt="Municipality Location" class="hidden" tabindex="-1" loading="lazy">
             </section>
             <section>

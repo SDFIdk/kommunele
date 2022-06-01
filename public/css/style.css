@@ -5,7 +5,7 @@
     line-height: 1.5;
     color: #666;
     background-color: #FFF;
-    background-image: url("data:image/svg+xml,<svg width='2' height='2' viewBox='0 0 6 6' xmlns='http://www.w3.org/2000/svg'><g fill='000000' fill-opacity='0.2' fill-rule='evenodd'><path d='M5 0h1L0 6V5zM6 5v1H5z'/></g></svg>");
+    background-image: url("data:image/svg+xml,<svg width='2' height='2' viewBox='0 0 6 6' xmlns='http://www.w3.org/2000/svg'><g fill='000000' fill-opacity='0.4' fill-rule='evenodd'><path d='M5 0h1L0 6V5zM6 5v1H5z'/></g></svg>");
     --map-width: 101vw;
 }
 body {
@@ -39,15 +39,17 @@ aside {
     margin-left: calc((var(--map-width) / 2) - 3rem);
 }
 #menu {
+    position: relative;
 }
-#menu input {
+#hiddenMenu {
     position: absolute;
     display: none;
 }
-#menu label {
+#menuIcon {
     cursor: pointer;
+    position: absolute;
 }
-#menu svg {
+#menuIcon svg {
     font-weight: bold;
     font-size: 2rem;
     width: 2rem;
@@ -55,32 +57,73 @@ aside {
     color: #000;
     display: block;
 }
-#menu svg path {
+#menuIcon svg path {
     stroke-linecap: round;
     stroke-linejoin: round;
     fill: none;
     stroke: #000;
     stroke-width: 0.625rem;
-    transition: all 250ms ease-in-out;
+    transition: d 250ms ease-in-out;
 }
-#hiddenMenu:checked ~ label svg path {
+#hiddenMenu:checked ~ #menuIcon svg path {
     d: path("M5 85 85 10M5 10 85 85M5 85 85 10");
-}
-#hiddenMenu:checked ~ #menuList {
-    opacity: 1;
 }
 #menuList {
     position: absolute;
+    display: block;
     list-style-type: none;
-    opacity: 0;
-    transition: all 250ms ease-in-out;
+    margin: 0;
+    padding: 0;
 }
 #menuList li {
-    background: rgba(255,0,0,0.5);
+    position: absolute;
+    cursor: pointer;
     border-radius: 50%;
     display: block;
-    width: 2rem;
-    height: 2rem;
+    width: 2.7rem;
+    height: 2.7rem;
+    text-align: center;
+    line-height: 1.8rem;
+    font-size: 1.7rem;
+    /*background: rgba(153,101,21,0.2);*/
+    background: rgba(30,200,0,0.4);
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
+    box-shadow: inset -1px -1px 2px rgba(10,10,10,0.3), inset 1px 1px 2px rgba(255,255,255,0.4), 3px 3px 6px rgba(200, 200, 200, 0.7), -3px -3px 6px rgba(255,255,255,0.8);
+    transition-property: transform;
+    transition-duration: 250ms;
+    transition-timing-function: ease-in;
+    transform-origin: 50% 50%;
+    transform: translate3d(0, 0, 0) scale3d(0,0,0);
+}
+#menuList li:nth-child(1) {
+    color: #F00;
+    line-height: 2.3rem;
+    font-size: 2rem;
+}
+#menuList li:nth-child(2) {
+    color: #00F;
+    line-height: 2.37rem;
+    font-size: 2.3rem;
+}
+#menuList li:nth-child(3) {
+    line-height: 2.3rem;
+    font-size: 1.7rem;
+}
+#hiddenMenu:checked ~ #menuList li {
+    transition-property: transform;
+    transition-timing-function: cubic-bezier(0.935, 0, 0.34, 1.33);
+}
+#hiddenMenu:checked ~ #menuList li:nth-child(1) {
+    transition-duration: 200ms;
+    transform: translate3d(-4rem, -0.4rem, 0) scale3d(1,1,1);
+}
+#hiddenMenu:checked ~ #menuList li:nth-child(2) {
+    transition-duration: 400ms;
+    transform: translate3d(-3.3rem, 2.6rem, 0) scale3d(1,1,1);
+}
+#hiddenMenu:checked ~ #menuList li:nth-child(3) {
+    transition-duration: 600ms;
+    transform: translate3d(-0.3rem, 3.2rem, 0) scale3d(1,1,1);
 }
 section:first-of-type {
     position: relative;
@@ -115,7 +158,10 @@ section:first-of-type img {
     transition: opacity 1s ease-in-out 0s, transform 1s ease-in-out 0s;
 }
 #municipalityImageResult {
-    transition: opacity 1.5s ease-in-out 300ms;
+    transition: opacity 1s ease-in-out 150ms;
+}
+#municipalityImageResult:not(.showImg) {
+    opacity: 0;
 }
 .hideImg {
     opacity: 0;
