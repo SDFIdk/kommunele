@@ -4,19 +4,19 @@
     const DomHasLoaded = new Promise((resolve) => {
             if (d.readyState !== 'loading') { resolve(); };
         }),
-        buttonSelect = d.querySelector('#button-select'),
-        municipalitySelector = d.querySelector('#municipality-selector'),
-        municipalityImage = d.querySelector('#municipality-image'),
-        municipalityImageResult = d.querySelector('#municipality-image-result'),
+        buttonSelect = d.querySelector('#buttonSelect'),
+        municipalitySelector = d.querySelector('#municipalitySelector'),
+        municipalityImage = d.querySelector('#municipalityImage'),
+        municipalityImageResult = d.querySelector('#municipalityImageResult'),
         resultTemplate = d.querySelector('#resultTemplate'),
-        navMenu = d.querySelector('#menu');
+        hiddenMenu = d.querySelector('#hiddenMenu');
 
     let imageTheme = 'green',
         imagePath = '/images/' + imageTheme + '/',
         municipalityList = null,
         relations = null,
         currentMunicipalityId = null,
-        guessList = d.querySelector('#guess-list');
+        guessList = d.querySelector('#guessList');
 
     const selectAnswer = (name) => {
         const guessedName = name ?? null,
@@ -57,29 +57,32 @@
     };
 
     DomHasLoaded.then(() => {
+        municipalityImageResult.addEventListener('load', () => {
+            d.documentElement.style.setProperty('--map-width', (municipalityImageResult.scrollWidth / parseFloat(getComputedStyle(d.documentElement).fontSize)) + 'rem');
+        });
+
+        hiddenMenu.addEventListener('change', (event) => {
+            //console.log(hiddenMenu.checked, event);
+        });
+
         d.forms.guess.addEventListener('submit', (event) => {
             event.preventDefault();
             const guess = municipalitySelector.value.replaceAll(/(^\w)|([-\s]\w)/g, w => w.toLocaleUpperCase()) || null,
                 guessForm = d.forms.guess;
             if (!selectAnswer(guess) || !guessForm.reportValidity()) {
                 guessForm.classList.toggle('shake');
-                w.setTimeout(() => {
-                    guessForm.classList.toggle('shake');
-                }, 400);
+                w.setTimeout(() => guessForm.classList.toggle('shake'), 400);
             };
             guessForm.reset();
         });
 
-        navMenu.addEventListener('click', (event) => {
-            navMenu.classList.toggle('open');
-            console.log(event);
+        w.addEventListener('click', (event) => {
+            if (!d.querySelector('#menu').contains(event.target)) {
+                hiddenMenu.checked = false;
+            };
         });
 
-        municipalityImage.addEventListener('load', () => {
-            d.documentElement.style.setProperty('--map-width', (d.querySelector('section:first-of-type').scrollWidth / parseFloat(getComputedStyle(d.documentElement).fontSize)) + 'rem');
-        });
-
-        const municipalityListElm = d.querySelector('#municipality-list'),
+        const municipalityListElm = d.querySelector('#municipalityList'),
             todayString = (new Date()).toLocaleDateString('en-CA', {year: 'numeric', month: '2-digit', day: '2-digit'}).replaceAll('-', ''),
             initData = [
                 getter('/data/date_list.json', (out) => {

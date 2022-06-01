@@ -23,7 +23,7 @@ body, header, main {
     padding: 0;
     margin: 0;
 }
-h1 {
+header h1 {
     padding: 0.625rem 0;
     font-weight: bold;
     cursor: default;
@@ -38,15 +38,24 @@ aside {
     top: 1rem;
     margin-left: calc((var(--map-width) / 2) - 3rem);
 }
-nav {
+#menu {
+    position: relative;
+}
+#menu input {
+    position: absolute;
+    display: none;
+}
+#menu label {
     cursor: pointer;
+}
+#menu svg {
     font-weight: bold;
     font-size: 2rem;
     width: 2rem;
     height: 2rem;
     color: #000;
 }
-svg path {
+#menu svg path {
     stroke-linecap: round;
     stroke-linejoin: round;
     fill: none;
@@ -54,8 +63,24 @@ svg path {
     stroke-width: 0.625rem;
     transition: all 250ms ease-in-out;
 }
-nav.open svg path {
+#hiddenMenu:checked ~ label svg path {
     d: path("M5 85 85 10M5 10 85 85M5 85 85 10");
+}
+#hiddenMenu:checked ~ #menuList {
+    opacity: 1;
+}
+#menuList {
+    position: absolute;
+    list-style-type: none;
+    opacity: 0;
+    transition: all 250ms ease-in-out;
+}
+#menuList li {
+    background: rgba(255,0,0,0.5);
+    border-radius: 50%;
+    display: block;
+    width: 2rem;
+    height: 2rem;
 }
 section:first-of-type {
     position: relative;
@@ -67,7 +92,7 @@ section:first-of-type::before {
     content: '';
     box-shadow: 0 0 7.8125rem #8F5922 inset;
     background: #FFFEF0;
-    filter: url(#wavy2) drop-shadow(3px 3px 0.3125rem rgba(0,0,0,0.6));
+    filter: url(#paperEdge) drop-shadow(3px 3px 0.3125rem rgba(0,0,0,0.6));
     top: 0;
     bottom: 0;
     left: 0.3rem;
@@ -86,10 +111,10 @@ section:first-of-type img {
     filter: drop-shadow(1px 1px 2px rgba(153,101,21,0.6));
     box-sizing: border-box;
 }
-#municipality-image {
+#municipalityImage {
     transition: opacity 1s ease-in-out 0s, transform 1s ease-in-out 0s;
 }
-#municipality-image-result {
+#municipalityImageResult {
     transition: opacity 1.5s ease-in-out 300ms;
 }
 .hideImg {
@@ -99,17 +124,17 @@ section:first-of-type img {
 .showImg {
     opacity: 1;
 }
-input {
+#municipalitySelector {
     box-shadow: 1px 1px 1px rgba(0,0,0,0.1);
     border-radius: 6px;
     border-style: groove;
 }
-button {
+#buttonSelect {
     cursor: pointer;
     margin: 0.3125rem;
     box-shadow: 1px 1px 1px rgba(0,0,0,0.2);
 }
-button:disabled {
+#buttonSelect:disabled {
     cursor: default;
 }
 .shake {

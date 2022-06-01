@@ -28,24 +28,32 @@
         </header>
         <aside>
             <nav id="menu">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet"><path d="M5 10 95 10M5 48 95 48M5 85 95 85"/></svg>
+                <input type="checkbox" id="hiddenMenu" class="hidden">
+                <label id="menuIcon" for="hiddenMenu">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet"><path d="M5 10 95 10M5 48 95 48M5 85 95 85"/></svg>
+                </label>
+                <ul id="menuList" class="hidden">
+                    <li>a</li>
+                    <li>b</li>
+                    <li>c</li>
+                </ul>
             </nav>
         </aside>
 
         <main>
             <section>
-                <img id="municipality-image" src="" alt="Municipality" class="shown" tabindex="-1" loading="lazy">
-                <img id="municipality-image-result" src="" alt="Municipality Location" class="hidden" tabindex="-1" loading="lazy">
+                <img id="municipalityImage" src="" alt="Municipality" class="shown" tabindex="-1" loading="lazy">
+                <img id="municipalityImageResult" src="" alt="Municipality Location" class="hidden" tabindex="-1" loading="lazy">
             </section>
             <section>
                 <form name="guess" autocomplete="off">
-                    <datalist id="municipality-list"></datalist>
-                    <input list="municipality-list" id="municipality-selector" autocomplete="off" type="text" minlength="4" required value="" inputmode="text" title="Indtast dit gæt her" pattern="[a-zA-ZæøåÆØÅ\s\-]+">
-                    <button id="button-select" formaction="" type="submit" title="Når du er sikker på dit gæt så klik her">
+                    <datalist id="municipalityList"></datalist>
+                    <input list="municipality-list" id="municipalitySelector" autocomplete="off" type="text" minlength="4" required value="" inputmode="text" title="Indtast dit gæt her" pattern="[a-zA-ZæøåÆØÅ\s\-]+">
+                    <button id="buttonSelect" formaction="" type="submit" title="Når du er sikker på dit gæt så klik her">
                         Gæt
                     </button>
                 </form>
-                <ul id="guess-list" tabindex="-1"></ul>
+                <ul id="guessList" tabindex="-1"></ul>
             </section>
         </main>
 
@@ -57,7 +65,7 @@
             </li>
         </template>
         <svg>
-            <filter id="wavy2">
+            <filter id="paperEdge">
                 <feTurbulence x="0" y="0" baseFrequency="0.02" numOctaves="5" seed="1" />
                 <feDisplacementMap in="SourceGraphic" scale="20" />
             </filter>
