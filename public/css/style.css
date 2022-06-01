@@ -39,7 +39,6 @@ aside {
     margin-left: calc((var(--map-width) / 2) - 3rem);
 }
 #menu {
-    position: relative;
 }
 #menu input {
     position: absolute;
@@ -54,6 +53,7 @@ aside {
     width: 2rem;
     height: 2rem;
     color: #000;
+    display: block;
 }
 #menu svg path {
     stroke-linecap: round;
