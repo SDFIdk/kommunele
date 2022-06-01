@@ -75,7 +75,7 @@
         });
 
         municipalityImage.addEventListener('load', () => {
-            d.documentElement.style.setProperty('--map-width', (municipalityImage.scrollWidth / parseFloat(getComputedStyle(d.documentElement).fontSize)) + 'rem');
+            d.documentElement.style.setProperty('--map-width', (d.querySelector('section:first-of-type').scrollWidth / parseFloat(getComputedStyle(d.documentElement).fontSize)) + 'rem');
         });
 
         const municipalityListElm = d.querySelector('#municipality-list'),
