@@ -114,15 +114,15 @@ aside {
     transition-timing-function: cubic-bezier(0.935, 0, 0.34, 1.33);
 }
 #hiddenMenu:checked ~ #menuList li:nth-child(1) {
-    transition-duration: 200ms;
+    transition-duration: 250ms;
     transform: translate3d(-4rem, -0.4rem, 0) scale3d(1,1,1);
 }
 #hiddenMenu:checked ~ #menuList li:nth-child(2) {
-    transition-duration: 400ms;
+    transition-duration: 500ms;
     transform: translate3d(-3.3rem, 2.6rem, 0) scale3d(1,1,1);
 }
 #hiddenMenu:checked ~ #menuList li:nth-child(3) {
-    transition-duration: 600ms;
+    transition-duration: 750ms;
     transform: translate3d(-0.3rem, 3.2rem, 0) scale3d(1,1,1);
 }
 section:first-of-type {
