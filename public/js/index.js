@@ -59,14 +59,15 @@
     DomHasLoaded.then(() => {
         d.forms.guess.addEventListener('submit', (event) => {
             event.preventDefault();
-            const guess = municipalitySelector.value.replaceAll(/(^\w)|([-\s]\w)/g, w => w.toLocaleUpperCase()) || null;
-            if (!selectAnswer(guess) || !d.forms.guess.checkValidity()) {
-                d.forms.guess.classList.toggle('shake');
+            const guess = municipalitySelector.value.replaceAll(/(^\w)|([-\s]\w)/g, w => w.toLocaleUpperCase()) || null,
+                guessForm = d.forms.guess;
+            if (!selectAnswer(guess) || !guessForm.reportValidity()) {
+                guessForm.classList.toggle('shake');
                 w.setTimeout(() => {
-                    d.forms.guess.classList.toggle('shake');
+                    guessForm.classList.toggle('shake');
                 }, 400);
             };
-            municipalitySelector.value = '';
+            guessForm.reset();
         });
 
         navMenu.addEventListener('click', (event) => {
