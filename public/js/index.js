@@ -77,7 +77,7 @@
         });
 
         w.addEventListener('click', (event) => {
-            if (!d.querySelector('#menu').contains(event.target)) {
+            if ((!d.querySelector('#menu').contains(event.target)) && (d.querySelector('#hiddenMenu:checked'))) {
                 hiddenMenu.checked = false;
             };
         });
