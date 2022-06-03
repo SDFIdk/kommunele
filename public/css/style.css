@@ -88,8 +88,8 @@ aside {
     /*background: rgba(153,101,21,0.2);*/
     /*background: rgba(30,200,0,0.4);*/
     background-color: #A1E595;
-    text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
-    box-shadow: inset -1px -1px 2px rgba(10,10,10,0.3), inset 1px 1px 2px rgba(255,255,255,0.4), 3px 3px 6px rgba(200, 200, 200, 0.7), -3px -3px 6px rgba(255,255,255,0.8);
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.3), -1px -1px 1px rgba(255,255,255,0.3);
+    box-shadow: inset -2px -2px 4px rgba(10,10,10,0.3), inset 2px 2px 4px rgba(255,255,255,0.4), 2px 2px 6px rgba(180, 180, 180, 0.9), -3px -3px 6px rgba(255,255,255,0.8);
     transition-property: transform;
     transition-duration: 250ms;
     transition-timing-function: ease-in;
@@ -98,17 +98,17 @@ aside {
 }
 #menuList li:nth-child(1) {
     color: #F00;
-    line-height: 2.3rem;
-    font-size: 2rem;
+    line-height: 2.4rem;
+    font-size: 1.8rem;
 }
 #menuList li:nth-child(2) {
     color: #00F;
-    line-height: 2.3rem;
+    line-height: 2.25rem;
     font-size: 2.5rem;
 }
 #menuList li:nth-child(3) {
-    line-height: 2.3rem;
-    font-size: 1.7rem;
+    line-height: 2.4rem;
+    font-size: 1.6rem;
 }
 #hiddenMenu:checked ~ #menuList li {
     transition-property: transform;
