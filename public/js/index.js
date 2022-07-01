@@ -77,7 +77,9 @@
         });
 
         w.addEventListener('click', (event) => {
-            if ((!d.querySelector('#menu').contains(event.target)) && (d.querySelector('#hiddenMenu:checked'))) {
+            if (d.querySelector('dialog').open) {
+                console.log(this, event);
+            } else if (d.querySelector('#hiddenMenu:checked') && (!d.querySelector('#menu').contains(event.target))) {
                 hiddenMenu.checked = false;
             };
         });
