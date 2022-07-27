@@ -255,14 +255,24 @@ dialog::backdrop {
 }
 dialog {
     padding: 1rem;
-    background: rgba(0,0,0,0.1);
+    background: rgba(0,0,0,0.5);
     overflow: hidden;
     border-radius: 0.2rem;
     border-style: ridge;
     border-width: 0.4rem;
     overflow: hidden;
 }
-/*dialog section {
+dialog form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+dialog p,
+dialog h2 {
+    filter: invert(100%);
+}
+/*
+dialog section {
     border-radius: 1rem;
     border-width: 0.2rem;
     border-style: groove;
@@ -276,7 +286,8 @@ dialog section::before {
     left: 0;
     right: 0;
     filter: blur(100vw);
-}*/
+}
+*/
 @-o-keyframes shake {
     0% { transform: translate(1.875rem); }
     20% { transform: translate(-1.875rem); }
