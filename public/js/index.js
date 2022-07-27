@@ -54,13 +54,15 @@
         fetch(file)
             .then(res => res.json())
             .then(out => fn(out))
+    },
+    showSite = () => {
+        municipalityImageResult.addEventListener('load', () => {
+            w.setTimeout(() => { d.body.className = 'showSite' }, 250);
+            d.documentElement.style.setProperty('--map-width', (municipalityImageResult.scrollWidth / parseFloat(getComputedStyle(d.documentElement).fontSize)) + 'rem');
+        });
     };
 
     DomHasLoaded.then(() => {
-        municipalityImageResult.addEventListener('load', () => {
-            d.documentElement.style.setProperty('--map-width', (municipalityImageResult.scrollWidth / parseFloat(getComputedStyle(d.documentElement).fontSize)) + 'rem');
-        });
-
         hiddenMenu.addEventListener('change', (event) => {
             //console.log(hiddenMenu.checked, event);
         });
@@ -103,6 +105,6 @@
                 getter('/data/relations.json', out => relations = out)
             ];
 
-        Promise.all([...initData]).then(() => d.body.className = 'showSite');
+        Promise.all([...initData]).then(showSite);
     });
 })(window, document);
