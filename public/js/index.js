@@ -57,7 +57,7 @@
     },
     showSite = () => {
         municipalityImageResult.addEventListener('load', () => {
-            w.setTimeout(() => { d.body.className = 'showSite' }, 250);
+            w.setTimeout(() => { d.body.className = 'showSite' }, 500);
             d.documentElement.style.setProperty('--map-width', (municipalityImageResult.scrollWidth / parseFloat(getComputedStyle(d.documentElement).fontSize)) + 'rem');
         });
     };

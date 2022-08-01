@@ -10,6 +10,7 @@
 }
 body {
     transition: opacity 1s;
+    -webkit-text-size-adjust: none;
 }
 body.showSite {
     opacity: 1;
