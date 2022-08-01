@@ -101,14 +101,42 @@ aside {
     transform: translate3d(0, 0, 0) scale3d(0,0,0);
 }
 #menuList li:nth-child(1) {
+    /*
+    color: #F00;
+    line-height: 2.4rem;
+    font-size: 1.8rem;
+    */
+}
+#menuList li:first-of-type::before {
+    content: attr(data-back);
+    display: block;
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transform: translateZ(-1px);
     color: #F00;
     line-height: 2.4rem;
     font-size: 1.8rem;
 }
-#menuList li:nth-child(2) {
+#menuList li:first-of-type::after {
+    content: attr(data-front);
+    display: block;
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transform: translateZ(1px);
     color: #00F;
     line-height: 2.25rem;
     font-size: 2.5rem;
+}
+#menuList li:nth-child(2) {
+/*    color: #00F;
+    line-height: 2.25rem;
+    font-size: 2.5rem;*/
 }
 #menuList li:nth-child(3) {
     line-height: 2.4rem;
@@ -121,6 +149,9 @@ aside {
 #hiddenMenu:checked ~ #menuList li:nth-child(1) {
     transition-duration: 250ms;
     transform: translate3d(-4rem, -0.4rem, 0) scale3d(1,1,1);
+    /* animation: rotate 2s infinite linear; */
+    /* animation: 2s linear 1s infinite rotate; */
+    /* animation: 3s ease-in 1s 2 reverse both paused slidein; */
 }
 #hiddenMenu:checked ~ #menuList li:nth-child(2) {
     transition-duration: 500ms;
@@ -324,4 +355,16 @@ dialog section::before {
 @-webkit-keyframes grow {
     0% { height: 0; }
     100% { height: 1.5rem; }
+}
+@-o-keyframes rotate {
+    0% { transform: rotateX(0deg); }
+    100% { transform: rotateX(359.9deg); }
+}
+@-moz-keyframes rotate {
+    0% { transform: rotateX(0deg); }
+    100% { transform: rotateX(359.9deg); }
+}
+@-webkit-keyframes rotate {
+    0% { transform: rotateX(0deg); }
+    100% { transform: rotateX(359.9deg); }
 }
