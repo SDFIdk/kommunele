@@ -318,7 +318,6 @@ dialog {
     cursor: default;
     overflow: auto;
     z-index: 5;
-    max-height: max-content;
 }
 dialog form {
     display: flex;
