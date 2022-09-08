@@ -7,6 +7,7 @@
     background-color: #FFF;
     background-image: url("data:image/svg+xml,<svg width='2' height='2' viewBox='0 0 6 6' xmlns='http://www.w3.org/2000/svg'><g fill='000000' fill-opacity='0.4' fill-rule='evenodd'><path d='M5 0h1L0 6V5zM6 5v1H5z'/></g></svg>");
     --map-width: 101vw;
+    --PI: 3.141592653589793;
 }
 body {
     transition: opacity 1s;
@@ -99,6 +100,7 @@ aside {
     transition-timing-function: ease-in;
     transform-origin: 50% 50%;
     transform: translate3d(0, 0, 0) scale3d(0,0,0);
+    transform-style: preserve-3d;
 }
 #menuList li:nth-child(1) {
     /*
@@ -115,25 +117,40 @@ aside {
     left: 0;
     width: 100%;
     height: 100%;
-    transform: translateZ(-1px);
+    /*transform: translateZ(-1px);*/
+    transform: rotateY(180deg);
     color: #F00;
     line-height: 2.4rem;
     font-size: 1.8rem;
+    backface-visibility: hidden;
 }
 #menuList li:first-of-type::after {
     content: attr(data-front);
     display: block;
-    position: relative;
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    transform: translateZ(1px);
+    /*transform: translateZ(1px);*/
+    transform: rotateY(0deg);
     color: #00F;
     line-height: 2.25rem;
     font-size: 2.5rem;
+    backface-visibility: hidden;
+}
+#hiddenMenu:checked ~ #menuList li:first-of-type {
+    animation-delay: 250ms;
+    animation-duration: 3s;
+    animation-iteration-count: infinite;
+    animation-play-state: running;
+    animation-timing-function: linear;
+    animation-direction: normal;
+    animation-fill-mode: none;
+    animation-name: rotate;
 }
 #menuList li:nth-child(2) {
+    line-height: 2.2rem;
 /*    color: #00F;
     line-height: 2.25rem;
     font-size: 2.5rem;*/
@@ -265,7 +282,6 @@ main section:first-of-type img {
     position: absolute;
     line-height: 1rem;
     font-size: 1.15rem;
-
 }
 #guessList li:not(.correct) span:nth-child(2)::before {
     content: attr(data-distance)'km'
@@ -293,6 +309,7 @@ dialog {
     border-style: ridge;
     border-width: 0.4rem;
     overflow: hidden;
+    box-shadow: 2px 2px 10px rgba(50,50,50,0.5);
 }
 dialog form {
     display: flex;
@@ -303,23 +320,74 @@ dialog p,
 dialog h2 {
     filter: invert(100%);
 }
-/*
-dialog section {
-    border-radius: 1rem;
-    border-width: 0.2rem;
-    border-style: groove;
-    overflow: hidden;
+dialog button {
+    margin-top: 1rem;
+    width: 8.5rem;
 }
-dialog section::before {
-    content: '';
+#infoDialog {
+    counter-reset: explainList 0 guessList 0;
+}
+#infoDialog p span.helpExplain:before,
+#infoDialog p span.helpGuess::before {
+    display: inline-block;
+    padding-right: 0.625rem;
+}
+#infoDialog p span.helpExplain::before {
+    counter-increment: explainList;
+    content: counter(explainList) ". ";
+}
+#infoDialog p span.helpGuess::before {
+    counter-increment: guessList;
+    content: counter(guessList) ". ";
+}
+#infoDialog p span.helpGuess {
+    margin-left: 1rem;
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    width: 11rem;
+}
+#infoDialog p span.helpGuess span {
+    display: inline-block;
+    margin-left: auto;
+    padding-right: 0.625rem;
+}
+dialog i {
+    width: 1rem;
+    height: 1rem;
+    transform-style: preserve-3D;
+    transform-origin: 50% 50%;
+    font-style: normal;
+    color: #666;
+    display: inline-block;
+}
+dialog i::before {
+    display: inline-block;
     position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    filter: blur(100vw);
+    line-height: 1rem;
+    font-size: 1.15rem;
 }
-*/
+dialog i.correct::before {
+    content: '\1F44D';
+    filter: hue-rotate(260deg) saturate(90%) brightness(0.8);
+}
+dialog i:not(.correct)::before {
+    content: '\027A4';
+}
+dialog p i.helpDeg1 {
+    --infoDeg1: 49.4569deg;
+    transform: rotate(calc(360deg - var(--infoDeg1) * 180/var(--PI)));
+    /*   360.0 - direction * 180.0/Math.PI*/
+}
+dialog p i.helpDeg2 {
+    --infoDeg2: 80.9696deg;
+    transform: rotate(calc(360deg - var(--infoDeg2) * 180/var(--PI)));
+}
+dialog p i.helpDeg3 {
+    --infoDeg3: 0.182505deg;
+    transform: rotate(calc(360deg - var(--infoDeg3) * 180/var(--PI)));
+}
+
 @-o-keyframes shake {
     0% { transform: translate(1.875rem); }
     20% { transform: translate(-1.875rem); }
@@ -357,14 +425,32 @@ dialog section::before {
     100% { height: 1.5rem; }
 }
 @-o-keyframes rotate {
-    0% { transform: rotateX(0deg); }
-    100% { transform: rotateX(359.9deg); }
+    0% {
+        transform-origin: calc(-4rem + (2.7rem)/2) -0.4rem;
+        transform: rotateY(0deg) translate3d(-4rem, -0.4rem, 0) scale3d(1,1,1);
+    }
+    100% {
+        transform-origin: calc(-4rem + (2.7rem)/2) -0.4rem;
+        transform: rotateY(359.9deg) translate3d(-4rem, -0.4rem, 0) scale3d(1,1,1);
+    }
 }
 @-moz-keyframes rotate {
-    0% { transform: rotateX(0deg); }
-    100% { transform: rotateX(359.9deg); }
+    0% {
+        transform-origin: calc(-4rem + (2.7rem)/2) -0.4rem;
+        transform: rotateY(0deg) translate3d(-4rem, -0.4rem, 0) scale3d(1,1,1);
+    }
+    100% {
+        transform-origin: calc(-4rem + (2.7rem)/2) -0.4rem;
+        transform: rotateY(359.9deg) translate3d(-4rem, -0.4rem, 0) scale3d(1,1,1);
+    }
 }
 @-webkit-keyframes rotate {
-    0% { transform: rotateX(0deg); }
-    100% { transform: rotateX(359.9deg); }
+    0% {
+        transform-origin: calc(-4rem + (2.7rem)/2) -0.4rem;
+        transform: rotateY(0deg) translate3d(-4rem, -0.4rem, 0) scale3d(1,1,1);
+    }
+    100% {
+        transform-origin: calc(-4rem + (2.7rem)/2) -0.4rem;
+        transform: rotateY(359.9deg) translate3d(-4rem, -0.4rem, 0) scale3d(1,1,1);
+    }
 }

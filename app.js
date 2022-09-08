@@ -10,6 +10,6 @@ app.get('/', (req, res) => {
 
 app.use(express.static('public'));
 
-app.listen(port, () => {
+app.listen(port, 'localhost',() => {
     console.log('Listening on port ' + port);
 });

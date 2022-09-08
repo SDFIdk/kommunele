@@ -33,10 +33,10 @@
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet"><path d="M5 10 95 10M5 48 95 48M5 85 95 85"/></svg>
                 </label>
                 <ul id="menuList" class="hidden">
-                    <li onclick="document.querySelector('#helpDialog').showModal();" data-front="&#128712;" data-back="&#10067;"></li>
-                    <li onclick="document.querySelector('#infoDialog').showModal();">&#128295;</li><!--<li>&#x1F527;</li>-->
+                    <li onclick="document.querySelector('#infoDialog').showModal();" data-front="&#128712;" data-back="&#10067;"></li>
+                    <li onclick="document.querySelector('#settingDialog').showModal();">&#128295;</li><!--<li>&#x1F527;</li>-->
                     <!--<li>&#128736;</li>-->
-                    <li>&#x1F4CA;</li>
+                    <li onclick="document.querySelector('#chartDialog').showModal();">&#x1F4CA;</li>
                 </ul>
             </nav>
         </aside>
@@ -72,37 +72,42 @@
             </filter>
         </svg>
         <dialog id="infoDialog">
-            <header>
-                <h2>Info</h2>
-            </header>
             <article>
+                <header>
+                    <h2>Hjælp</h2>
+                </header>
                 <p>
                     Gæt en kommune ud fra omridset af kommunen. Du har ligeså mange forsøg, som du har brug for. Du vil kunne gætte en ny kommune hver dag.
                     <br>
                     Når du gætter på en kommune, vil du få et svar tilbage, som angiver 2 ting:
                     <br>
-                    1. Afstanden i kilometer fra kommunegrænsen fra den kommune du gættede på til kommunegrænsen på det rigtige svar.
+                    <span class="helpExplain">Afstanden i kilometer fra kommunegrænsen fra den kommune du gættede på til kommunegrænsen på det rigtige svar.</span>
                     <br>
-                    2. Retningen fra massemidtpunktet på den kommune du gættede på til massemidtpunktet på det rigtige svar.
+                    <span class="helpExplain">Retningen fra massemidtpunktet på den kommune du gættede på til massemidtpunktet på det rigtige svar.</span>
                     <br>
                     <br>
                     Et eksempel på, hvordan spillet fungerer:
                     <br>
-                    1. Viborg 198km (49.4569deg)
-                    <br>
+                    <span class="helpGuess">Viborg <span>198km</span> <i class="helpDeg1"></i></span>
                     I første gæt er Viborg kommune valgt. Der er 198km fra Viborgs kommunegrænse til kommunegrænsen på det rigtige svar. Derudover befinder det rigtige svar sig sydøst for Viborg.
                     <br>
-                    2. Næstved 16km (80.9696deg)
-                    <br>
+                    <span class="helpGuess">Næstved <span>16km</span> <i class="helpDeg2"></i></span>
                     I andet gæt er Næstved kommune valgt. Der er nu kun 16km fra Næstveds kommunegrænse til kommunegrænsen på det rigtige svar. Næstved kommune ligger stortset nord for det rigtige svar.
                     <br>
-                    3. Lolland 0km (0.182505deg)
-                    <br>
+                    <span class="helpGuess">Lolland <span>0km</span> <i class="helpDeg3"></i></span>
                     I tredje gæt er Lolland kommune valgt. Lollands kommunegrænse ligger lige op af det rigtige svar og det rigtige svar befinder sig øst for Lolland kommune.
                     <br>
-                    4. Guldborgsund
-                    <br>
+                    <span class="helpGuess">Guldborgsund <span></span><i class="correct"></i></span>
                     Det fjerde og sidste gæt er Guldborgsund kommune, og det er i dette eksempel det rigtige svar.
+                </p>
+            </article>
+            <hr>
+            <article>
+                <header>
+                    <h2>Info</h2>
+                </header>
+                <p>
+
                 </p>
             </article>
             <form method="dialog">
@@ -110,12 +115,23 @@
             </form>
             <!--<button onclick="this.parentNode.close();">Luk</button>-->
         </dialog>
-        <dialog id="helpDialog">
+        <dialog id="settingDialog">
             <header>
-                <h2>Hjælp</h2>
+                <h2>Indstillinger</h2>
             </header>
             <article>
-                <p>sdfgsdfgsdfgsdfgsdfg</p>
+                <p>Under udvikling</p>
+            </article>
+            <form method="dialog">
+                <button>Luk</button>
+            </form>
+        </dialog>
+        <dialog id="chartDialog">
+            <header>
+                <h2>Sejrs Kumle</h2>
+            </header>
+            <article>
+                <p>Under udvikling</p>
             </article>
             <form method="dialog">
                 <button>Luk</button>
