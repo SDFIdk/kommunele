@@ -321,6 +321,7 @@ dialog form {
 dialog p,
 dialog h2 {
     filter: invert(100%);
+    overflow: auto;
 }
 dialog button {
     margin-top: 1rem;
