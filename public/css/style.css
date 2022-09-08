@@ -311,6 +311,7 @@ dialog {
     overflow: hidden;
     box-shadow: 2px 2px 10px rgba(50,50,50,0.5);
     cursor: default;
+    overflow: auto;
 }
 dialog form {
     display: flex;
