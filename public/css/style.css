@@ -138,7 +138,7 @@ aside {
     line-height: 2.25rem;
     font-size: 2.5rem;
     backface-visibility: hidden;
-    font-weight: bold;
+    font-weight: bolder;
 }
 #hiddenMenu:checked ~ #menuList li:first-of-type {
     animation-delay: 250ms;
