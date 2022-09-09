@@ -123,6 +123,7 @@ aside {
     line-height: 2.4rem;
     font-size: 1.8rem;
     backface-visibility: hidden;
+    font-weight: bold;
 }
 #menuList li:first-of-type::after {
     content: attr(data-front);
