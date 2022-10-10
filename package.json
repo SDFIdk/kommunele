@@ -2,6 +2,16 @@
   "name": "kommunele",
   "version": "0.0.1",
   "description": "A Worldle ripoff using Danish DAGI municipalities instead of countries/territories.",
+  "homepage": "https://github.com/AskeFC/kommunele#readme",
+  "repository": "github:AskeFC/kommunele",
+  "author": "Casper Børgesen <b@rubble.com> (https://github.com/chau-intl)",
+  "contributors": [
+    {
+      "name": "Aske Færch Christensen",
+      "email": "askefc@gmail.com",
+      "url": "https://github.com/AskeFC"
+    }
+  ],
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
