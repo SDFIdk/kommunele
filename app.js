@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 
-const port = 3000;
+const port = 4444;
 
 
 app.get('/', (req, res) => {
@@ -10,6 +10,6 @@ app.get('/', (req, res) => {
 
 app.use(express.static('public'));
 
-app.listen(port, () => {
+app.listen(port, 'localhost',() => {
     console.log('Listening on port ' + port);
 });

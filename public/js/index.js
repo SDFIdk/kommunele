@@ -4,17 +4,19 @@
     const DomHasLoaded = new Promise((resolve) => {
             if (d.readyState !== 'loading') { resolve(); };
         }),
-        buttonSelect = d.querySelector('#button-select'),
-        municipalitySelector = d.querySelector('#municipality-selector'),
-        municipalityImage = d.querySelector('#municipality-image'),
-        municipalityImageResult = d.querySelector('#municipality-image-result'),
-        resultTemplate = d.querySelector('#resultTemplate');
+        buttonSelect = d.querySelector('#buttonSelect'),
+        municipalitySelector = d.querySelector('#municipalitySelector'),
+        municipalityImage = d.querySelector('#municipalityImage'),
+        municipalityImageResult = d.querySelector('#municipalityImageResult'),
+        resultTemplate = d.querySelector('#resultTemplate'),
+        hiddenMenu = d.querySelector('#hiddenMenu');
 
     let imageTheme = 'green',
+        imagePath = '/images/' + imageTheme + '/',
         municipalityList = null,
         relations = null,
         currentMunicipalityId = null,
-        guessList = d.querySelector('#guess-list');
+        guessList = d.querySelector('#guessList');
 
     const selectAnswer = (name) => {
         const guessedName = name ?? null,
@@ -52,29 +54,47 @@
         fetch(file)
             .then(res => res.json())
             .then(out => fn(out))
+    },
+    showSite = () => {
+        municipalityImageResult.addEventListener('load', () => {
+            w.setTimeout(() => { d.body.className = 'showSite' }, 500);
+            d.documentElement.style.setProperty('--map-width', (municipalityImageResult.scrollWidth / parseFloat(getComputedStyle(d.documentElement).fontSize)) + 'rem');
+        });
     };
 
     DomHasLoaded.then(() => {
-        d.forms.guess.addEventListener('submit', (event) => {
-            event.preventDefault();
-            const guess = municipalitySelector.value.replaceAll(/(^\w)|([-\s]\w)/g, w => w.toLocaleUpperCase()) || null;
-            if (!selectAnswer(guess) || !d.forms.guess.checkValidity()) {
-                d.forms.guess.classList.toggle('shake');
-                w.setTimeout(() => {
-                    d.forms.guess.classList.toggle('shake');
-                }, 400);
-            };
-            municipalitySelector.value = '';
+        hiddenMenu.addEventListener('change', (event) => {
+            //console.log(hiddenMenu.checked, event);
         });
 
-        const municipalityListElm = d.querySelector('#municipality-list'),
+        d.forms.guess.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const guess = municipalitySelector.value.replaceAll(/(^\w)|([-\s]\w)/g, w => w.toLocaleUpperCase()) || null,
+                guessForm = d.forms.guess;
+            if (!selectAnswer(guess) || !guessForm.reportValidity()) {
+                guessForm.classList.toggle('shake');
+                w.setTimeout(() => guessForm.classList.toggle('shake'), 400);
+            };
+            guessForm.reset();
+        });
+
+        w.addEventListener('click', (event) => {
+            if (d.querySelector('dialog').open) {
+                // console.log(this, event);
+            } else if (d.querySelector('#hiddenMenu:checked') && (!d.querySelector('#menu').contains(event.target))) {
+                hiddenMenu.checked = false;
+            };
+        });
+
+        const municipalityListElm = d.querySelector('#municipalityList'),
             todayString = (new Date()).toLocaleDateString('en-CA', {year: 'numeric', month: '2-digit', day: '2-digit'}).replaceAll('-', ''),
             initData = [
                 getter('/data/date_list.json', (out) => {
                     // Set the municipality image.
                     currentMunicipalityId = out?.[todayString] ?? 'NotFound';
-                    municipalityImage.src = '/images/' + imageTheme + '/' + currentMunicipalityId + '.png';
-                    municipalityImageResult.src = '/images/' + imageTheme + '/' + currentMunicipalityId + '_result.png';
+                    const imgSrc = imagePath + currentMunicipalityId;
+                    municipalityImage.src = imgSrc + '.png';
+                    municipalityImageResult.src = imgSrc + '_result.png';
                 }),
                 getter('/data/municipality_list.json', (out) => {
                     municipalityList = out;
@@ -84,6 +104,7 @@
                 }),
                 getter('/data/relations.json', out => relations = out)
             ];
-        Promise.all([...initData]).then(() => d.body.className = 'showSite');
+
+        Promise.all([...initData]).then(showSite);
     });
 })(window, document);
