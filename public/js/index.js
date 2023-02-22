@@ -87,7 +87,7 @@
         });
 
         const municipalityListElm = d.querySelector('#municipalityList'),
-            todayString = (new Date()).toLocaleDateString('en-CA', {year: 'numeric', month: '2-digit', day: '2-digit'}).replaceAll('-', ''),
+            todayString = (new Date()).toLocaleDateString('ko-kr', {year: 'numeric', month: '2-digit', day: '2-digit'}).replaceAll('.', '').replaceAll(' ', ''),
             initData = [
                 getter('/data/date_list.json', (out) => {
                     // Set the municipality image.
