@@ -26,8 +26,8 @@ def get_data(folder):
 
     result = {}
 
-    driver = ogr.GetDriverByName('GML')
-    in_ds = driver.Open(os.path.join(folder, 'dagi_10m_nohist_l1.kommuneinddeling.gml'))
+    driver = ogr.GetDriverByName('GPKG')
+    in_ds = driver.Open(os.path.join(folder, 'dagi_250.gpkg'))
     in_layer = in_ds.GetLayerByIndex(0)
 
     count = 0
@@ -35,10 +35,12 @@ def get_data(folder):
     current_feature = in_layer.GetNextFeature()
 
     while current_feature is not None:
-        count += 1
-        kom_id = current_feature.GetFieldAsString('kommunekode')
+        if current_feature.GetFieldAsString('skala') == '1:250.000':
+            count += 1
+            kom_id = current_feature.GetFieldAsString('kommunekode')
 
-        result[kom_id] = current_feature.Clone()
+            result[kom_id] = current_feature.Clone()
+
         current_feature = in_layer.GetNextFeature()
 
         #if count > 15:
@@ -48,6 +50,10 @@ def get_data(folder):
     
 
 if __name__ == "__main__":
+    '''
+    As input data use the DAGI data set from Datafordeler.dk called "DAGI Fildownload". It it probably the most easy DAGI data set to fetch.
+    Create a folder "input_folder", put the data set into that folder and rename it to dagi_250.gpkg.
+    '''
     err = GdalErrorHandler()
     gdal.PushErrorHandler(err.handler)
     gdal.UseExceptions()  # Exceptions will get raised on anything >= gdal.CE_Failure
